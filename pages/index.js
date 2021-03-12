@@ -8,6 +8,8 @@ import {
 	supportedOutputLanguages,
 	supportedOutputLanguagesDescription,
 } from "../data/Languages";
+import { useTheme } from 'next-themes'
+
 
 export default function Home({ API_URL }) {
 	const [inputFormat, setInputFormat] = useState(supportedInputLanguages[0]);
@@ -16,7 +18,7 @@ export default function Home({ API_URL }) {
 	const [inputData, setInputData] = useState(defaultInput);
 	const [outputData, setOutputData] = useState("");
 	const [renderHTML, setRenderHTML] = useState(false);
-
+	const { theme, setTheme } = useTheme('dark')
 
 	const handleRenderHTML = () => {
 		if (renderHTML === true) { setCmd(`pandoc -f ${inputFormat} stext -t html -o otext`) };
@@ -47,7 +49,7 @@ export default function Home({ API_URL }) {
 
 	return (
 		<>
-			<div className="grid grid-cols-12 gap-7 p-7">
+			<div className="grid grid-cols-12 gap-7 p-7 dark:bg-gray-800 w-full dark:text-gray-100">
 				<div className="col-span-full md:col-span-6 text-center place-items-center">
 					<Selector
 						inputFormat={inputFormat}
@@ -60,7 +62,7 @@ export default function Home({ API_URL }) {
 						renderHTML={false}
 						sType="Input"
 					/>
-					<button className="md:float-right shadow sm:items-center  focus:outline-none mt-1 px-1 rounded-md border border-5 hover:bg-gray-100 items-center truncate" onClick={async () => await getOutput()}>Generate Output</button>
+					<button className="md:float-right shadow sm:items-center  focus:outline-none mt-1 px-1 rounded-md border border-5 hover:bg-gray-100 items-center truncate dark:hover:bg-transparent" onClick={async () => await getOutput()}>Generate Output</button>
 					<Textarea
 						disabled={false}
 						title="Input"
@@ -73,8 +75,8 @@ export default function Home({ API_URL }) {
 				<div className="col-span-full md:col-span-6 text-center place-items-center">
 
 					<input type="checkbox" className="float-left ml-5 mt-2 shadow-inner cursor-pointer" value={renderHTML} onClick={() => handleRenderHTML()} defaultChecked={renderHTML} />
-          
-					<span className="float-left ml-2">Render HTML</span>
+
+					<span className="float-left ml-2 cursor-default">Render HTML</span>
 					<Selector
 						inputFormat={outputFormat}
 						setInputFormat={setOutputFormat}
@@ -86,8 +88,6 @@ export default function Home({ API_URL }) {
 						renderHTML={renderHTML}
 						sType="Output"
 					/>
-
-
 					<Textarea
 						disabled={true}
 						title="Output"

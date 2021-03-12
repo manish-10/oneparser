@@ -13,7 +13,7 @@ export const Selector = ({
     }
     return (<>
         {(!renderHTML) ? <select
-            className="border rounded shadow px-2 cursor-pointer"
+            className="border rounded shadow px-2 cursor-pointer dark:bg-gray-600"
             value={inputFormat}
             onChange={(e) => handleSelectorChange(e)}
         >{supportedInputLanguages
@@ -24,7 +24,7 @@ export const Selector = ({
                 </option>
             ))}
         </select> : <select
-            className="border rounded px-2 cursor-pointer"
+            className="border rounded px-2 dark:bg-gray-500 dark:text-gray-700 cursor-not-allowed"
             value='html5'
             disabled
         >

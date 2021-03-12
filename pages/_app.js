@@ -1,12 +1,15 @@
+import { ThemeProvider } from 'next-themes';
 import { Layout } from '../components/Layout';
 import '../styles/tailwind.css';
 
 function MyApp({ Component, pageProps }) {
-  return (
-  <Layout>
-    <Component {...pageProps} />
-  </Layout>
-  )
+	return (
+		<ThemeProvider attribute="class">
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+		</ThemeProvider>
+	)
 }
 
 export default MyApp
