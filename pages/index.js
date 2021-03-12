@@ -1,25 +1,110 @@
-import { useState } from 'react'
-import { Textarea } from '../components/Textarea'
+import { useState, useEffect } from "react";
+import { Textarea } from "../components/Textarea";
+import { Selector } from "../components/Selector";
+import { defaultInput } from '../data/defaultInput';
+import {
+	supportedInputLanguages,
+	supportedInputLanguagesDescription,
+	supportedOutputLanguages,
+	supportedOutputLanguagesDescription,
+} from "../data/Languages";
 
-export default function Home() {
-    const supportedInputLanguages = ["a", "2", "3"];
-    const supportedOutputLanguages = ["o", "2", "3"]
-    const [valueInput, setValueInput] = useState(supportedInputLanguages[0]);
-    const [valueOutput, setValueOutput] = useState(supportedOutputLanguages[0]);
-    return (
-        <div className="grid grid-cols-12 gap-7 p-7">
-            <div className="col-span-6 text-center">
-                <select className="border px-6 " value={valueInput} onChange={(e) => setValueInput(e.target.value)}>
-                    {supportedInputLanguages.filter((lang) => lang !== valueOutput).map(lang => (<option key={lang} value={lang}>{lang}</option>))}
-                </select>
-                <Textarea disabled={false} title="Input" />
-            </div>
-            <div className="col-span-6 text-center">
-                <select className="border px-6 " value={valueOutput} onChange={(e) => setValueOutput(e.target.value)}>
-                    {supportedOutputLanguages.filter((lang) => lang !== valueInput).map(lang => (<option key={lang} value={lang}>{lang}</option>))}
-                </select>
-                <Textarea disabled={true} title="Output" />
-            </div>
-        </div>
-    )
+export default function Home({ API_URL }) {
+	const [inputFormat, setInputFormat] = useState(supportedInputLanguages[0]);
+	const [outputFormat, setOutputFormat] = useState(supportedOutputLanguages[0]);
+	const [cmd, setCmd] = useState("pandoc -f commonmark stext -t S5 -o otext");
+	const [inputData, setInputData] = useState(defaultInput);
+	const [outputData, setOutputData] = useState("");
+	const [renderHTML, setRenderHTML] = useState(false);
+
+
+	const handleRenderHTML = () => {
+		if (renderHTML === true) { setCmd(`pandoc -f ${inputFormat} stext -t html -o otext`) };
+		setRenderHTML(!renderHTML);
+	}
+	//Server fetching opertation
+	const apiData = {
+		inputData: inputData,
+		cmd: cmd,
+	};
+
+	const fetchOptions = {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(apiData),
+	};
+
+	const getOutput = async () => {
+		await fetch(API_URL, fetchOptions)
+			.then((response) => response.json())
+			.then((data) => setOutputData(data));
+	};
+
+	useEffect(() => {
+		setCmd(`pandoc -f ${inputFormat} stext -t ${outputFormat} -o otext`);
+	}, [inputFormat, outputFormat, renderHTML]);
+	// Server fetch ends
+
+	return (
+		<>
+			<div className="grid grid-cols-12 gap-7 p-7">
+				<div className="col-span-full md:col-span-6 text-center place-items-center">
+					<Selector
+						inputFormat={inputFormat}
+						setInputFormat={setInputFormat}
+						supportedInputLanguages={supportedInputLanguages}
+						supportedInputLanguagesDescription={
+							supportedInputLanguagesDescription
+						}
+						outputFormat={outputFormat}
+						renderHTML={false}
+						sType="Input"
+					/>
+					<button className="md:float-right shadow sm:items-center  focus:outline-none mt-1 px-1 rounded-md border border-5 hover:bg-gray-100 items-center truncate" onClick={async () => await getOutput()}>Generate Output</button>
+					<Textarea
+						disabled={false}
+						title="Input"
+						data={inputData}
+						setInputData={setInputData}
+						lang={inputFormat}
+						renderHTML={false}
+					/>
+				</div>
+				<div className="col-span-full md:col-span-6 text-center place-items-center">
+
+					<input type="checkbox" className="float-left ml-5 mt-2 shadow-inner cursor-pointer" value={renderHTML} onClick={() => handleRenderHTML()} defaultChecked={renderHTML} />
+          
+					<span className="float-left ml-2">Render HTML</span>
+					<Selector
+						inputFormat={outputFormat}
+						setInputFormat={setOutputFormat}
+						supportedInputLanguages={supportedOutputLanguages}
+						outputFormat={inputFormat}
+						supportedOutputLanguagesDescription={
+							supportedOutputLanguagesDescription
+						}
+						renderHTML={renderHTML}
+						sType="Output"
+					/>
+
+
+					<Textarea
+						disabled={true}
+						title="Output"
+						data={outputData}
+						setInputData={setOutputData}
+						lang={outputFormat}
+						renderHTML={renderHTML}
+					/>
+				</div>
+			</div>
+		</>
+	);
+}
+
+export async function getStaticProps() {
+	const API_URL = `${process.env.API_HOST}/api/pandoc`;
+	return {
+		props: { API_URL },
+	};
 }

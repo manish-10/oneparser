@@ -1,12 +1,12 @@
 import Head from "next/head"
-import Navbar from "./Navbar"
-export const Layout = ({children}) => {
+import { Navbar } from "./Navbar"
+export const Layout = ({ children }) => {
     return (
-        <div>
+        <div classname="items-center">
             <Head>
                 <title>OneParser</title>
             </Head>
-            <Navbar/>
+            <Navbar />
             <main>
                 {children}
             </main>
