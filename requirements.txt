@@ -1,2 +1,2 @@
-sanic-cors = "^0.10.0"
-sanic = "^20.12.2"
+sanic-cors = ^0.10.0
+sanic = ^20.12.2
