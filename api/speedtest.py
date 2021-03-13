@@ -1,8 +1,5 @@
 from http.server import BaseHTTPRequestHandler
 import os
-
-os.system("pip install speedtest")
-
 import speedtest
 
 class handler(BaseHTTPRequestHandler):
