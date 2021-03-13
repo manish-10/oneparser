@@ -49,8 +49,8 @@ export default function Home({ API_URL }) {
 
 	return (
 		<>
-			<div className="grid grid-cols-12 gap-7 p-7 dark:bg-gray-800 w-full dark:text-gray-100">
-				<div className="col-span-full md:col-span-6 text-center place-items-center">
+			<div className="grid grid-cols-12 gap-7 p-7 dark:bg-gray-900 w-full dark:text-gray-100">
+				<div className="col-span-full md:col-span-6 text-center place-items-center" style={{height:'80vh'}}>
 					<Selector
 						inputFormat={inputFormat}
 						setInputFormat={setInputFormat}
@@ -72,7 +72,7 @@ export default function Home({ API_URL }) {
 						renderHTML={false}
 					/>
 				</div>
-				<div className="col-span-full md:col-span-6 text-center place-items-center">
+				<div className="col-span-full md:col-span-6 text-center place-items-center mt-12 md:mt-0">
 
 					<input type="checkbox" className="float-left ml-5 mt-2 shadow-inner cursor-pointer" value={renderHTML} onClick={() => handleRenderHTML()} defaultChecked={renderHTML} />
 

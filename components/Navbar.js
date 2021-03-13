@@ -4,8 +4,8 @@ export const Navbar = ({ HOST }) => {
 	const { theme, setTheme } = useTheme('dark')
 	return (
 		<div>
-			<div className="text-center dark:bg-gray-800">
-				<div className="text-xl bg-gradient-to-r from-green-400 via-blue-400 to-green-400 py-4 px-4 font-bold text-black rounded-b-xl shadow dark:bg-gradient-to-r dark:from-green-400 dark:via-green-700 dark:to-green-400 dark:text-gray-50">
+			<div className="text-center dark:bg-gray-900">
+				<div className="text-xl bg-gradient-to-r from-green-400 via-green-300 to-green-400 py-4 px-4 font-bold text-black rounded-b-xl shadow dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-800 dark:text-gray-50">
 					<Link href="/" as={HOST} >OneParser</Link>
 					<button
 						aria-label="Toggle Dark Mode"

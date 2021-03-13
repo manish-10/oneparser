@@ -13,7 +13,7 @@ export const Selector = ({
     }
     return (<>
         {(!renderHTML) ? <select
-            className="border rounded shadow px-2 cursor-pointer dark:bg-gray-600"
+            className="border rounded shadow px-2 cursor-pointer dark:bg-gray-700"
             value={inputFormat}
             onChange={(e) => handleSelectorChange(e)}
         >{supportedInputLanguages
