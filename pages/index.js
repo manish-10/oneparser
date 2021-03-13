@@ -18,7 +18,7 @@ export default function Home({ API_URL }) {
 	const [inputData, setInputData] = useState(defaultInput);
 	const [outputData, setOutputData] = useState("");
 	const [renderHTML, setRenderHTML] = useState(false);
-	const { theme, setTheme } = useTheme('dark')
+	const { theme, setTheme } = useTheme()
 
 	const handleRenderHTML = () => {
 		if (renderHTML === true) { setCmd(`pandoc -f ${inputFormat} stext -t html -o otext`) };
